@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext, "Item deleted from the Shopping List", Toast.LENGTH_LONG).show()
                         takeDataFromFireStore()
                     }
-                val deletedItemPosition = viewHolder.adapterPosition
+                //val deletedItemPosition = viewHolder.adapterPosition
 
                 checkListRecyclerViewAdapterClass.notifyItemRemoved(viewHolder.adapterPosition)
 
