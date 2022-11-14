@@ -1,15 +1,12 @@
 package com.example.shoppinglist
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 class CheckListRecyclerViewAdapterClass (
@@ -25,7 +22,6 @@ class CheckListRecyclerViewAdapterClass (
         val myView = LayoutInflater.from(parent.context).inflate(R.layout.check_list_rec_view_model_layout, parent, false)
 
         firebaseFireStore = FirebaseFirestore.getInstance()
-
 
         return CheckListViewHolder(myView)
     }
@@ -46,8 +42,6 @@ class CheckListRecyclerViewAdapterClass (
                     .update("checkListItemCheckListPosition", checkListTotalList[position].checkListItemCheckListPosition)
             }
         }
-
-
     }
 
     override fun getItemCount(): Int {
@@ -68,9 +62,7 @@ class CheckListRecyclerViewAdapterClass (
             checkListModelClass: CheckListModelClass,
             clickListener: (CheckListModelClass) -> Unit
         ) {
-
             checkListTextView.text = checkListModelClass.checkListItemName
-
             val checkListCheckBoxPosition = checkListModelClass.checkListItemCheckListPosition
             checkListCheckBox.isChecked = checkListCheckBoxPosition
 

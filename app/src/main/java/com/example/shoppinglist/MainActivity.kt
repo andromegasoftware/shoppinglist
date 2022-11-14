@@ -72,9 +72,6 @@ class MainActivity : AppCompatActivity() {
         updatedItemId = checkListModelClass.documentId
         showDialog()
 
-        //handle click listener
-        //Toast.makeText(this, checkListModelClass.checkListItemName, Toast.LENGTH_LONG).show()
-
     }
 
     private fun takeDataFromFireStore(){
@@ -84,7 +81,6 @@ class MainActivity : AppCompatActivity() {
                 for (document in documents){
                     val resultForCheckListItems: CheckListModelClass = document.toObject(CheckListModelClass::class.java)
                     checkListTotalListArray.add(resultForCheckListItems)
-                    //Log.w("listen_data", document.id)
                 }
 
                 checkListRecyclerViewAdapterClass.submitList(checkListTotalListArray)
@@ -92,7 +88,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
             .addOnFailureListener { exception ->
-                //Log.w("listen_data", "Error getting documents: ", exception)
             }
 
     }
@@ -102,7 +97,6 @@ class MainActivity : AppCompatActivity() {
                 .set(checkListModelClass, SetOptions.merge())
                 .addOnSuccessListener {
                     takeDataFromFireStore()
-                    //Log.d("TAG", "DocumentSnapshot successfully written!")
                 }
 
 
@@ -118,13 +112,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun EditText.onDone(callback: () -> Unit) {
-        // These lines optional if you don't want to set in Xml
         imeOptions = EditorInfo.IME_ACTION_DONE
         maxLines = 1
         setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-                // Your action on done
+                // My action on done
                 if(addItemToListEditText.text.toString() != "") {
                     documentId = collectionReference.document().id
                     checkListModelClass = CheckListModelClass(false, addItemToListEditText.text.toString(), documentId)
@@ -146,14 +139,10 @@ class MainActivity : AppCompatActivity() {
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                // this method is called
-                // when the item is moved.
                 return false
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // this method is called when we swipe our item to right direction.
-                // on below line we are getting the item at a particular position.
                 val deletedItemOnList: CheckListModelClass = checkListTotalListArray[viewHolder.adapterPosition]
                 val deletedItemId = deletedItemOnList.documentId
                 collectionReference.document(deletedItemId).delete()
@@ -161,20 +150,11 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext, "Item deleted from the Shopping List", Toast.LENGTH_LONG).show()
                         takeDataFromFireStore()
                     }
-                // below line is to get the position
-                // of the item at that position.
                 val deletedItemPosition = viewHolder.adapterPosition
 
-                // this method is called when item is swiped.
-                // below line is to remove item from our array list.
-                //courseList.removeAt(viewHolder.adapterPosition)
-
-                // below line is to notify our item is removed from adapter.
                 checkListRecyclerViewAdapterClass.notifyItemRemoved(viewHolder.adapterPosition)
 
             }
-            // at last we are adding this
-            // to our recycler view.
         }).attachToRecyclerView(checkListRecyclerView)
 
     }
@@ -183,17 +163,12 @@ class MainActivity : AppCompatActivity() {
         val builder: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
         builder.setTitle("Update Shopping List Item")
 
-        // Set up the input
         val input = EditText(this)
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        //input.hint = "Enter Text"
         input.inputType = InputType.TYPE_CLASS_TEXT
         input.setText(updatedItemOnList)
         builder.setView(input)
 
-        // Set up the buttons
         builder.setPositiveButton("Update", DialogInterface.OnClickListener { dialog, which ->
-            // Here you get get input text from the Edittext
             updatedItemOnList = input.text.toString()
             collectionReference.document(updatedItemId).update("checkListItemName", updatedItemOnList)
                 .addOnSuccessListener {
